@@ -1,92 +1,83 @@
-export interface Manhwa {
-  mal_id: number
-  url: string
-  images: {
-    jpg: {
-      image_url: string | null
-      small_image_url: string | null
-      large_image_url: string | null
-    }
-    webp: {
-      image_url: string | null
-      small_image_url: string | null
-      large_image_url: string | null
-    }
-  }
-  approved: boolean | null
-  title: string
-  title_english: string | null
-  title_japanese: string | null
-  title_synonyms: string[]
-  type: string | null
-  chapters: number | null
-  volumes: number | null
-  status: string | null
-  publishing: boolean
-  published: {
-    from: string | null
-    to: string | null
-    prop: {
-      from: { day: number | null; month: number | null; year: number | null }
-      to: { day: number | null; month: number | null; year: number | null }
-      string: string | null
-    }
-    string: string | null
-  }
-  score: number | null
-  scored_by: number | null
-  rank: number | null
-  popularity: number | null
-  members: number | null
-  favorites: number | null
-  synopsis: string | null
-  background: string | null
-  authors: Array<{ mal_id: number; type: string; name: string; url: string }>
-  serializations: Array<{ mal_id: number; type: string; name: string; url: string }>
-  genres: Array<{ mal_id: number; type: string; name: string; url: string }>
-  explicit_genres: Array<{ mal_id: number; type: string; name: string; url: string }>
-  themes: Array<{ mal_id: number; type: string; name: string; url: string }>
-  demographics: Array<{ mal_id: number; type: string; name: string; url: string }>
+export interface FuzzyDate {
+  year: number | null;
+  month: number | null;
+  day: number | null;
 }
 
-export interface ManhwaFull extends Manhwa {
-  relations: Array<{
-    relation: string
-    entry: Array<{ mal_id: number; type: string; name: string; url: string }>
-  }>
-  external: Array<{ name: string; url: string }>
-  theme: {
-    openings: string[]
-    endings: string[]
-  }
+export interface ManhwaTitle {
+  romaji: string | null;
+  english: string | null;
+  native: string | null;
 }
+
+export interface ManhwaCover {
+  large: string | null;
+  extraLarge?: string | null;
+}
+
+// Valores de status según la documentación de AniList (verifica con una respuesta real)
+export type ManhwaStatus = 'FINISHED' | 'RELEASING' | 'NOT_YET_RELEASED' | 'CANCELLED' | 'HIATUS';
+
+// Elemento de la lista (Explorar y landing)
+export interface Manhwa {
+  id: number;
+  title: ManhwaTitle;
+  coverImage: ManhwaCover;
+  averageScore: number | null;   // 0 a 100
+  chapters: number | null;
+  status: ManhwaStatus | null;
+  format: string | null;
+}
+
+// Detalle por ID
+export interface ManhwaDetail extends Manhwa {
+  description: string | null;
+  bannerImage: string | null;
+  popularity: number | null;
+  favourites: number | null;
+  volumes: number | null;
+  startDate: FuzzyDate | null;
+  endDate: FuzzyDate | null;
+  genres: string[] | null;
+  countryOfOrigin: string | null;
+  isAdult: boolean;
+  siteUrl: string | null;
+}
+
+// Para el estado de favoritos
+export type ManhwaSummary = Pick<Manhwa, 'id' | 'title' | 'coverImage' | 'averageScore' | 'chapters'>;
+
+export interface PageInfo {
+  total: number | null;
+  perPage: number | null;
+  currentPage: number | null;
+  lastPage: number | null;
+  hasNextPage: boolean | null;
+}
+
+export interface ManhwaPage {
+  pageInfo: PageInfo;
+  media: Manhwa[];
+}
+
+// Parámetros de búsqueda
+export type ManhwaSort = 'POPULARITY_DESC' | 'SCORE_DESC' | 'TITLE_ROMAJI' | 'SEARCH_MATCH';
 
 export interface ManhwaSearchParams {
-  q?: string
-  page?: number
-  limit?: number
-  status?: string
-  order_by?: string
-  sort?: 'asc' | 'desc' | string
-  min_score?: number
+  search?: string;
+  page?: number;
+  perPage?: number;
+  status?: ManhwaStatus;
+  sort?: ManhwaSort;
 }
 
-export interface ManhwaPagination {
-  last_visible_page: number
-  has_next_page: boolean
-  current_page: number
-  items: {
-    count: number
-    total: number
-    per_page: number
-  }
+// Envoltorios de respuesta GraphQL
+export interface GraphQLError {
+  message: string;
+  status?: number;
 }
 
-export interface ManhwaListResponse {
-  data: Manhwa[]
-  pagination: ManhwaPagination
-}
-
-export interface ManhwaResponse<T> {
-  data: T
+export interface GraphQLResponse<T> {
+  data: T | null;
+  errors?: GraphQLError[];
 }

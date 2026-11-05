@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react'
-import { getManhwaById } from '../services/jikan'
-import type { ManhwaFull } from '../types/manhwa'
+import { getManhwaById } from '../services/anilist'
+import type { ManhwaDetail } from '../types/manhwa'
 
 type UseManhwaDetailResult = {
-  data: ManhwaFull | null
+  data: ManhwaDetail | null
   loading: boolean
   error: string | null
 }
 
-function useManhwaDetail(id: number | string | null | undefined): UseManhwaDetailResult {
-  const [data, setData] = useState<ManhwaFull | null>(null)
+function useManhwaDetail(id: number | null | undefined): UseManhwaDetailResult {
+  const [data, setData] = useState<ManhwaDetail | null>(null)
   const [loading, setLoading] = useState(Boolean(id))
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
 
-    if (id === null || id === undefined || id === '') {
+    if (id === null || id === undefined) {
       return () => controller.abort()
     }
 
@@ -40,7 +40,7 @@ function useManhwaDetail(id: number | string | null | undefined): UseManhwaDetai
     return () => controller.abort()
   }, [id])
 
-  if (id === null || id === undefined || id === '') {
+  if (id === null || id === undefined) {
     return { data: null, loading: false, error: null }
   }
 

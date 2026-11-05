@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
-import { searchManhwa } from '../services/jikan'
-import type { Manhwa, ManhwaPagination, ManhwaSearchParams } from '../types/manhwa'
+import { searchManhwa } from '../services/anilist'
+import type { Manhwa, ManhwaSearchParams, PageInfo } from '../types/manhwa'
 
 type UseManhwaListResult = {
   data: Manhwa[]
-  pagination: ManhwaPagination | null
+  pageInfo: PageInfo | null
   loading: boolean
   error: string | null
 }
 
 function useManhwaList(params: ManhwaSearchParams = {}): UseManhwaListResult {
-  const { q, page, limit, status, order_by, sort, min_score } = params
+  const { search, page, perPage, status, sort } = params
   const [data, setData] = useState<Manhwa[]>([])
-  const [pagination, setPagination] = useState<ManhwaPagination | null>(null)
+  const [pageInfo, setPageInfo] = useState<PageInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -24,11 +24,11 @@ function useManhwaList(params: ManhwaSearchParams = {}): UseManhwaListResult {
 
       try {
         const response = await searchManhwa(
-          { q, page, limit, status, order_by, sort, min_score },
+          { search, page, perPage, status, sort },
           controller.signal,
         )
-        setData(response.data)
-        setPagination(response.pagination)
+        setData(response.media)
+        setPageInfo(response.pageInfo)
       } catch (caughtError) {
         if (caughtError instanceof DOMException && caughtError.name === 'AbortError') return
         setError(caughtError instanceof Error ? caughtError.message : 'No se pudo cargar el listado')
@@ -41,17 +41,9 @@ function useManhwaList(params: ManhwaSearchParams = {}): UseManhwaListResult {
       window.clearTimeout(timeoutId)
       controller.abort()
     }
-  }, [
-    q,
-    page,
-    limit,
-    status,
-    order_by,
-    sort,
-    min_score,
-  ])
+  }, [search, page, perPage, status, sort])
 
-  return { data, pagination, loading, error }
+  return { data, pageInfo, loading, error }
 }
 
 export default useManhwaList
