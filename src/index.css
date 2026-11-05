@@ -53,3 +53,8 @@ body {
   border-top: 1px solid #4cc9ff;
   border-left: 1px solid #4cc9ff;
 }
+
+.confirm-dialog::backdrop {
+  background: rgb(5 7 13 / 75%);
+  backdrop-filter: blur(3px);
+}
