@@ -5,14 +5,15 @@ type PagePlaceholderProps = {
 
 function PagePlaceholder({ title, description }: PagePlaceholderProps) {
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
-      <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-cyan-400">
+    <SystemWindow title="STATUS">
+      <p className="mb-3 font-rajdhani text-sm font-semibold uppercase tracking-widest text-system-shadow">
         Página placeholder
       </p>
-      <h1 className="text-4xl font-bold tracking-tight">{title}</h1>
-      <p className="mt-4 max-w-2xl text-slate-400">{description}</p>
-    </section>
+      <h1 className="font-orbitron text-3xl font-bold tracking-tight text-system-text">{title}</h1>
+      <p className="mt-4 max-w-2xl text-lg text-system-muted">{description}</p>
+    </SystemWindow>
   )
 }
 
 export default PagePlaceholder
+import SystemWindow from '../components/SystemWindow'

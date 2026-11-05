@@ -1,13 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+@config "../tailwind.config.ts";
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  --system-ink: #05070d;
+  --system-panel: #0b1020;
+  --system-text: #e8f1ff;
+  --system-muted: #8c9bb8;
+  font-family: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+  color: var(--system-text);
+  background: var(--system-ink);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   min-width: 320px;
+  background: var(--system-ink);
+}
+
+.light {
+  --system-ink: #edf4ff;
+  --system-panel: #ffffff;
+  --system-text: #111827;
+  --system-muted: #52627a;
+  color: var(--system-text);
+  background: var(--system-ink);
+}
+
+.light body {
+  background: var(--system-ink);
+}
+
+.system-window {
+  clip-path: polygon(0 14px, 14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+
+.system-window__notch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-top: 1px solid #4cc9ff;
+  border-left: 1px solid #4cc9ff;
 }
