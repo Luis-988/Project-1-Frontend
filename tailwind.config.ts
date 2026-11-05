@@ -6,23 +6,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        system: {
-          ink: 'var(--system-ink)',
-          panel: 'var(--system-panel)',
-          neon: '#2f80ff',
-          ice: '#4cc9ff',
-          shadow: '#8b3dff',
-          text: 'var(--system-text)',
-          muted: 'var(--system-muted)',
-        },
+        base: 'var(--bg-base)',
+        surface: 'var(--bg-surface)',
+        fg: 'var(--text-fg)',
+        muted: 'var(--text-muted)',
+        line: 'var(--border-line)',
+        accent: 'var(--text-accent)',
+        'accent-2': 'var(--text-accent-2)',
+        btn: 'var(--bg-btn)',
+        'on-btn': 'var(--text-on-btn)',
       },
       fontFamily: {
         orbitron: ['Orbitron', 'sans-serif'],
         rajdhani: ['Rajdhani', 'sans-serif'],
       },
       boxShadow: {
-        neon: '0 0 12px rgba(47, 128, 255, 0.45), 0 0 32px rgba(76, 201, 255, 0.18)',
-        shadow: '0 0 12px rgba(139, 61, 255, 0.5), 0 0 32px rgba(139, 61, 255, 0.2)',
+        glow: 'var(--shadow-glow)',
       },
     },
   },

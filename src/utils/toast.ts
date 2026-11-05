@@ -3,9 +3,9 @@ import { toast } from 'sonner'
 const toastOptions = {
   duration: 3000,
   style: {
-    background: '#0b1020',
-    border: '1px solid #2f80ff',
-    color: '#e8f1ff',
+    background: 'var(--bg-surface)',
+    border: '1px solid var(--border-line)',
+    color: 'var(--text-fg)',
     fontFamily: 'Rajdhani, sans-serif',
   },
 }

@@ -22,12 +22,12 @@ function FavoriteButton({ manhwa, className = '' }: FavoriteButtonProps) {
     <>
       <button
         type="button"
-        className={`inline-flex items-center justify-center rounded-full border border-system-neon/60 p-2 text-xl transition hover:border-system-neon hover:text-system-neon ${className}`}
+        className={`inline-flex items-center justify-center rounded-full border border-line p-2 text-xl transition hover:border-accent hover:text-accent ${className}`}
         aria-label={favorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
         aria-pressed={favorite}
         onClick={() => toggle(manhwa)}
       >
-        <span aria-hidden="true" className={favorite ? 'text-system-neon' : 'text-system-muted'}>
+        <span aria-hidden="true" className={favorite ? 'text-accent' : 'text-muted'}>
           {favorite ? '♥' : '♡'}
         </span>
       </button>

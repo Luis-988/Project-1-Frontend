@@ -15,6 +15,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/explorar" element={<Explore />} />
+          <Route path="/manhwa/:id" element={<Detail />} />
           <Route path="/anime/:id" element={<Detail />} />
           <Route path="/favoritos" element={<Favorites />} />
           <Route path="/contacto" element={<Contact />} />

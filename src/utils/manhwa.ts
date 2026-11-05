@@ -19,6 +19,10 @@ export function formatScore(score: number | null): string {
   return score === null ? 'N/A' : `${score}/100`
 }
 
+export function formatScoreShort(score: number | null): string {
+  return score === null ? 'N/A' : (score / 10).toFixed(1)
+}
+
 export function formatChapters(chapters: number | null): string {
   return chapters === null ? 'En curso' : String(chapters)
 }

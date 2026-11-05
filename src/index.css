@@ -5,13 +5,21 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --system-ink: #05070d;
-  --system-panel: #0b1020;
-  --system-text: #e8f1ff;
-  --system-muted: #8c9bb8;
+  --bg-base: #f4f7ff;
+  --bg-surface: #ffffff;
+  --text-fg: #0b1220;
+  --text-muted: #475569;
+  --border-line: #c7d2ea;
+  --text-accent: #1d4ed8;
+  --text-accent-2: #0369a1;
+  --bg-btn: #2563eb;
+  --text-on-btn: #ffffff;
+  --shadow-glow: 0 0 10px rgb(37 99 235 / 18%);
+  --shadow-title: none;
+  --backdrop: rgb(7 5 15 / 75%);
   font-family: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
-  color: var(--system-text);
-  background: var(--system-ink);
+  color: var(--text-fg);
+  background: var(--bg-base);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,20 +32,22 @@
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--system-ink);
+  background: var(--bg-base);
 }
 
-.light {
-  --system-ink: #edf4ff;
-  --system-panel: #ffffff;
-  --system-text: #111827;
-  --system-muted: #52627a;
-  color: var(--system-text);
-  background: var(--system-ink);
-}
-
-.light body {
-  background: var(--system-ink);
+html.dark {
+  --bg-base: #07050f;
+  --bg-surface: #100a21;
+  --text-fg: #efeaff;
+  --text-muted: #a99fc9;
+  --border-line: #3b2a6b;
+  --text-accent: #c084fc;
+  --text-accent-2: #a855f7;
+  --bg-btn: #7c3aed;
+  --text-on-btn: #ffffff;
+  --shadow-glow: 0 0 12px rgb(168 85 247 / 35%), 0 0 30px rgb(124 58 237 / 18%);
+  --shadow-title: 0 0 12px rgb(192 132 252 / 18%);
+  --backdrop: rgb(7 5 15 / 75%);
 }
 
 .system-window {
@@ -50,11 +60,38 @@ body {
   left: 0;
   width: 14px;
   height: 14px;
-  border-top: 1px solid #4cc9ff;
-  border-left: 1px solid #4cc9ff;
+  border-top: 1px solid var(--text-accent);
+  border-left: 1px solid var(--text-accent);
 }
 
 .confirm-dialog::backdrop {
-  background: rgb(5 7 13 / 75%);
+  background: var(--backdrop);
   backdrop-filter: blur(3px);
+}
+
+.hero-title {
+  text-shadow: var(--shadow-title);
+}
+
+.cover-card {
+  opacity: 0.85;
+  box-shadow: var(--shadow-glow);
+}
+
+html.dark .cover-card {
+  opacity: 0.5;
+}
+
+.hero-glow {
+  background:
+    radial-gradient(circle at 50% 35%, rgb(191 219 254 / 55%), transparent 38%),
+    radial-gradient(circle at 75% 65%, rgb(224 231 255 / 70%), transparent 32%),
+    var(--bg-base);
+}
+
+html.dark .hero-glow {
+  background:
+    radial-gradient(circle at 50% 35%, rgb(168 85 247 / 18%), transparent 38%),
+    radial-gradient(circle at 75% 65%, rgb(67 56 202 / 16%), transparent 32%),
+    var(--bg-base);
 }

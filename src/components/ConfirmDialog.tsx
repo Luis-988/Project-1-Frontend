@@ -55,7 +55,7 @@ function ConfirmDialog({
   return (
     <dialog
       ref={dialogRef}
-      className="confirm-dialog w-[min(calc(100%-2rem),28rem)] bg-transparent p-0 text-system-text"
+      className="confirm-dialog w-[min(calc(100%-2rem),28rem)] bg-transparent p-0 text-fg"
       aria-labelledby="confirm-dialog-title"
       aria-describedby="confirm-dialog-message"
       onCancel={(event) => {
@@ -66,20 +66,20 @@ function ConfirmDialog({
     >
       <SystemWindow title="[ALERTA DEL SISTEMA]" className="p-6">
         <h2 id="confirm-dialog-title" className="sr-only">{title}</h2>
-        <p id="confirm-dialog-message" className="font-rajdhani text-lg text-system-text">
+        <p id="confirm-dialog-message" className="font-rajdhani text-lg text-fg">
           {message}
         </p>
         <div className="mt-6 flex justify-end gap-3">
           <button
             type="button"
-            className="border border-system-muted/60 px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider text-system-muted transition hover:border-system-text hover:text-system-text"
+            className="border border-line px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider text-muted transition hover:border-fg hover:text-fg"
             onClick={onCancel}
           >
             {cancelLabel}
           </button>
           <button
             type="button"
-            className="border border-system-neon bg-system-neon px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider text-system-ink shadow-neon transition hover:bg-system-ice"
+            className="border border-btn bg-btn px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider text-on-btn shadow-glow transition hover:bg-accent"
             onClick={onConfirm}
           >
             {confirmLabel}

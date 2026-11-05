@@ -9,10 +9,10 @@ type SystemWindowProps = {
 function SystemWindow({ title, children, className = '' }: SystemWindowProps) {
   return (
     <section
-      className={`system-window relative border border-system-neon/70 bg-system-panel/90 p-6 shadow-neon ${className}`}
+      className={`system-window relative border border-line bg-surface/90 p-6 shadow-glow ${className}`}
     >
       <div className="system-window__notch" aria-hidden="true" />
-      <h2 className="mb-5 font-orbitron text-xs font-bold tracking-[0.3em] text-system-ice">
+      <h2 className="mb-5 font-orbitron text-xs font-bold tracking-[0.3em] text-accent-2">
         // {title}
       </h2>
       {children}
