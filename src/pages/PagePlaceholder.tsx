@@ -1,9 +1,14 @@
+import useDocumentTitle from '../hooks/useDocumentTitle'
+import SystemWindow from '../components/SystemWindow'
+
 type PagePlaceholderProps = {
   title: string
   description: string
 }
 
 function PagePlaceholder({ title, description }: PagePlaceholderProps) {
+  useDocumentTitle(title)
+
   return (
     <SystemWindow title="STATUS">
       <p className="mb-3 font-rajdhani text-sm font-semibold uppercase tracking-widest text-system-shadow">
@@ -16,4 +21,3 @@ function PagePlaceholder({ title, description }: PagePlaceholderProps) {
 }
 
 export default PagePlaceholder
-import SystemWindow from '../components/SystemWindow'

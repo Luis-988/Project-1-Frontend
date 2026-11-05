@@ -20,7 +20,7 @@ function Navbar({ isLight, onToggleTheme }: NavbarProps) {
     <header className="border-b border-system-neon/20 bg-system-ink/90 backdrop-blur-md">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4" aria-label="Navegación principal">
         <Link className="font-orbitron text-lg font-bold tracking-wider text-system-ice" to="/" onClick={() => setIsOpen(false)}>
-          <span className="text-system-shadow">◈</span> ANIME SYSTEM
+          <span className="text-system-shadow">◈</span> MANHWA SYSTEM
         </Link>
         <button
           className="rounded border border-system-neon/50 p-2 text-system-ice md:hidden"
