@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { Toaster } from 'sonner'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
@@ -13,6 +14,18 @@ function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#0b1020',
+            border: '1px solid #2f80ff',
+            color: '#e8f1ff',
+            fontFamily: 'Rajdhani, sans-serif',
+          },
+        }}
+      />
     </div>
   )
 }

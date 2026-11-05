@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 900" role="img" aria-labelledby="title description">
+  <title id="title">Portada no disponible</title>
+  <desc id="description">Ventana azul neón con un signo de interrogación</desc>
+  <rect width="640" height="900" fill="#05070d"/>
+  <path d="M56 96 96 56h448l40 40v708l-40 40H96l-40-40V96Z" fill="#0b1020" stroke="#2f80ff" stroke-width="8"/>
+  <path d="M56 96h528M96 56v40m448-40v40" fill="none" stroke="#4cc9ff" stroke-width="8"/>
+  <circle cx="320" cy="450" r="128" fill="none" stroke="#8b3dff" stroke-width="12"/>
+  <text x="320" y="500" fill="#4cc9ff" font-family="Orbitron, sans-serif" font-size="180" font-weight="700" text-anchor="middle">?</text>
+</svg>
