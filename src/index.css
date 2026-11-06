@@ -78,6 +78,10 @@ html.dark {
   text-shadow: var(--shadow-title);
 }
 
+.not-found-code {
+  text-shadow: var(--shadow-title);
+}
+
 .cover-card {
   opacity: 0.85;
   box-shadow: var(--shadow-glow);
