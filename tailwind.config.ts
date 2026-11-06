@@ -13,6 +13,7 @@ export default {
         line: 'var(--border-line)',
         accent: 'var(--text-accent)',
         'accent-2': 'var(--text-accent-2)',
+        error: 'var(--text-error)',
         btn: 'var(--bg-btn)',
         'on-btn': 'var(--text-on-btn)',
       },

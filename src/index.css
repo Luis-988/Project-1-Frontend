@@ -12,6 +12,7 @@
   --border-line: #c7d2ea;
   --text-accent: #1d4ed8;
   --text-accent-2: #0369a1;
+  --text-error: #b42318;
   --bg-btn: #2563eb;
   --text-on-btn: #ffffff;
   --shadow-glow: 0 0 10px rgb(37 99 235 / 18%);
@@ -48,6 +49,7 @@ html.dark {
   --border-line: #3b2a6b;
   --text-accent: #c084fc;
   --text-accent-2: #a855f7;
+  --text-error: #ff8a80;
   --bg-btn: #7c3aed;
   --text-on-btn: #ffffff;
   --shadow-glow: 0 0 12px rgb(168 85 247 / 35%), 0 0 30px rgb(124 58 237 / 18%);
