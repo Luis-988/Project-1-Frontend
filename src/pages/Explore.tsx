@@ -102,7 +102,7 @@ function Explore() {
               Buscar manhwa...
             </label>
             <input
-              className="w-full border border-accent/40 bg-base px-4 py-3 text-fg outline-none transition placeholder:text-muted focus:border-accent-2 focus:shadow-neon"
+              className="w-full border border-accent/40 bg-base px-4 py-3 text-fg transition placeholder:text-muted focus:border-accent-2 focus:shadow-neon"
               id="manhwa-search"
               placeholder="Buscar manhwa..."
               value={search}
@@ -117,13 +117,13 @@ function Explore() {
           </button>
           <div>
             <label className="mb-2 block font-rajdhani text-sm font-semibold text-fg" htmlFor="manhwa-status">Estado</label>
-            <select className="w-full border border-accent/40 bg-base px-4 py-3 text-fg outline-none focus:border-accent-2" id="manhwa-status" value={status} onChange={(event) => updateStatus(event.target.value as ManhwaStatus | '')}>
+            <select className="w-full border border-accent/40 bg-base px-4 py-3 text-fg focus:border-accent-2" id="manhwa-status" value={status} onChange={(event) => updateStatus(event.target.value as ManhwaStatus | '')}>
               {statusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
             </select>
           </div>
           <div>
             <label className="mb-2 block font-rajdhani text-sm font-semibold text-fg" htmlFor="manhwa-sort">Orden</label>
-            <select className="w-full border border-accent/40 bg-base px-4 py-3 text-fg outline-none focus:border-accent-2" id="manhwa-sort" value={sort} onChange={(event) => updateSort(event.target.value as ManhwaSort)}>
+            <select className="w-full border border-accent/40 bg-base px-4 py-3 text-fg focus:border-accent-2" id="manhwa-sort" value={sort} onChange={(event) => updateSort(event.target.value as ManhwaSort)}>
               {sortOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
             </select>
           </div>

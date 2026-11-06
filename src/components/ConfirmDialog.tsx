@@ -1,14 +1,15 @@
-import { useEffect, useRef, type MouseEvent } from 'react'
+import { useEffect, useRef, type MouseEvent, type ReactNode } from 'react'
 import SystemWindow from './SystemWindow'
 
 type ConfirmDialogProps = {
   open: boolean
   title: string
-  message: string
+  message: ReactNode
   confirmLabel: string
   cancelLabel: string
   onConfirm: () => void
   onCancel: () => void
+  danger?: boolean
 }
 
 function ConfirmDialog({
@@ -19,8 +20,10 @@ function ConfirmDialog({
   cancelLabel,
   onConfirm,
   onCancel,
+  danger = false,
 }: ConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const cancelButtonRef = useRef<HTMLButtonElement>(null)
   const openerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -33,6 +36,7 @@ function ConfirmDialog({
           ? document.activeElement
           : null
         dialog.showModal()
+        cancelButtonRef.current?.focus()
       }
 
       const previousOverflow = document.body.style.overflow
@@ -55,7 +59,7 @@ function ConfirmDialog({
   return (
     <dialog
       ref={dialogRef}
-      className="confirm-dialog w-[min(calc(100%-2rem),28rem)] bg-transparent p-0 text-fg"
+      className="confirm-dialog m-auto max-h-[90vh] w-[min(92vw,28rem)] bg-transparent p-0 text-fg backdrop:bg-black/70 backdrop:backdrop-blur-sm"
       aria-labelledby="confirm-dialog-title"
       aria-describedby="confirm-dialog-message"
       onCancel={(event) => {
@@ -66,11 +70,13 @@ function ConfirmDialog({
     >
       <SystemWindow title="[ALERTA DEL SISTEMA]" className="p-6">
         <h2 id="confirm-dialog-title" className="sr-only">{title}</h2>
-        <p id="confirm-dialog-message" className="font-rajdhani text-lg text-fg">
+        <div id="confirm-dialog-message" className="font-rajdhani text-lg text-fg">
+          <span className="mr-3 text-3xl text-accent" aria-hidden="true">⚠</span>
           {message}
-        </p>
+        </div>
         <div className="mt-6 flex justify-end gap-3">
           <button
+            ref={cancelButtonRef}
             type="button"
             className="border border-line px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider text-muted transition hover:border-fg hover:text-fg"
             onClick={onCancel}
@@ -79,7 +85,7 @@ function ConfirmDialog({
           </button>
           <button
             type="button"
-            className="border border-btn bg-btn px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider text-on-btn shadow-glow transition hover:bg-accent"
+            className={`border px-4 py-2 font-rajdhani font-semibold uppercase tracking-wider shadow-glow transition ${danger ? 'border-red-500 bg-red-600 text-white hover:bg-red-700' : 'border-btn bg-btn text-on-btn hover:bg-accent'}`}
             onClick={onConfirm}
           >
             {confirmLabel}

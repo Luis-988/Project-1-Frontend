@@ -4,14 +4,14 @@ import type { Manhwa, ManhwaDetail, ManhwaSummary } from '../types/manhwa'
 import { notifyInfo, notifySuccess } from '../utils/toast'
 
 type UseFavoriteToggleResult = {
-  toggle: (manhwa: Manhwa | ManhwaDetail) => void
+  toggle: (manhwa: Manhwa | ManhwaDetail | ManhwaSummary) => void
   isConfirmOpen: boolean
   favoriteToRemove: ManhwaSummary | null
   confirmRemoval: () => void
   cancelRemoval: () => void
 }
 
-function toSummary(manhwa: Manhwa | ManhwaDetail): ManhwaSummary {
+function toSummary(manhwa: Manhwa | ManhwaDetail | ManhwaSummary): ManhwaSummary {
   return {
     id: manhwa.id,
     title: manhwa.title,
@@ -25,7 +25,7 @@ function useFavoriteToggle(): UseFavoriteToggleResult {
   const { addFavorite, removeFavorite, isFavorite } = useFavorites()
   const [favoriteToRemove, setFavoriteToRemove] = useState<ManhwaSummary | null>(null)
 
-  const toggle = useCallback((manhwa: Manhwa | ManhwaDetail) => {
+  const toggle = useCallback((manhwa: Manhwa | ManhwaDetail | ManhwaSummary) => {
     const summary = toSummary(manhwa)
 
     if (isFavorite(manhwa.id)) {

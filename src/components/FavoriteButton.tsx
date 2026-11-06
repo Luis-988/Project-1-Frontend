@@ -1,11 +1,11 @@
-import type { Manhwa, ManhwaDetail } from '../types/manhwa'
+import type { Manhwa, ManhwaDetail, ManhwaSummary } from '../types/manhwa'
 import type { MouseEvent } from 'react'
 import useFavoriteToggle from '../hooks/useFavoriteToggle'
 import { useFavorites } from '../context/FavoritesContext'
 import ConfirmDialog from './ConfirmDialog'
 
 type FavoriteButtonProps = {
-  manhwa: Manhwa | ManhwaDetail
+  manhwa: Manhwa | ManhwaDetail | ManhwaSummary
   className?: string
   showLabel?: boolean
 }
