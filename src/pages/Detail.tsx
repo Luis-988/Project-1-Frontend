@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import FavoriteButton from '../components/FavoriteButton'
 import SystemWindow from '../components/SystemWindow'
 import useDocumentTitle from '../hooks/useDocumentTitle'
@@ -39,9 +39,27 @@ function DetailSkeleton() {
   )
 }
 
+type BackButtonProps = {
+  onBack: () => void
+}
+
+function BackButton({ onBack }: BackButtonProps) {
+  return (
+    <button
+      className="font-rajdhani text-accent-2 hover:underline"
+      type="button"
+      aria-label="Volver"
+      onClick={onBack}
+    >
+      ← Volver
+    </button>
+  )
+}
+
 function Detail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const parsedId = Number(id)
   const validId = Number.isInteger(parsedId) && parsedId > 0 ? parsedId : null
   const [retryKey, setRetryKey] = useState(0)
@@ -55,12 +73,19 @@ function Detail() {
     if (error) notifyError('No se pudo cargar la información. Verifica tu conexión e intenta de nuevo.')
   }, [error])
 
-  const hasHistory = useMemo(() => window.history.length > 1, [])
+  const handleBack = () => {
+    if (location.key !== 'default') {
+      navigate(-1)
+      return
+    }
+
+    navigate('/explorar')
+  }
 
   if (validId === null) {
     return (
       <section className="space-y-6">
-        <Link className="font-rajdhani text-accent-2 hover:underline" to="/explorar">← Volver a explorar</Link>
+        <BackButton onBack={handleBack} />
         <SystemWindow title="STATUS">
           <h1 className="font-orbitron text-3xl font-bold text-fg">Este manhwa no existe</h1>
           <Link className="mt-5 inline-block text-accent-2 hover:underline" to="/explorar">Explorar manhwas</Link>
@@ -72,7 +97,7 @@ function Detail() {
   if (loading) {
     return (
       <section className="space-y-6">
-        <Link className="font-rajdhani text-accent-2 hover:underline" to="/explorar">← Volver a explorar</Link>
+        <BackButton onBack={handleBack} />
         <DetailSkeleton />
       </section>
     )
@@ -81,7 +106,7 @@ function Detail() {
   if (error === 'No encontrado' || (!loading && !data && !error)) {
     return (
       <section className="space-y-6">
-        <Link className="font-rajdhani text-accent-2 hover:underline" to="/explorar">← Volver a explorar</Link>
+        <BackButton onBack={handleBack} />
         <SystemWindow title="STATUS">
           <h1 className="font-orbitron text-3xl font-bold text-fg">Este manhwa no existe</h1>
           <Link className="mt-5 inline-block text-accent-2 hover:underline" to="/explorar">Explorar manhwas</Link>
@@ -93,7 +118,7 @@ function Detail() {
   if (error || data === null || cover === null) {
     return (
       <section className="space-y-6">
-        <Link className="font-rajdhani text-accent-2 hover:underline" to="/explorar">← Volver a explorar</Link>
+        <BackButton onBack={handleBack} />
         <SystemWindow title="STATUS">
           <div className="flex flex-col items-center gap-4 text-center">
             <span className="text-5xl" aria-hidden="true">⚠</span>
@@ -108,10 +133,7 @@ function Detail() {
   return (
     <article className="space-y-6">
       <div className="flex flex-wrap items-center gap-5">
-        <Link className="font-rajdhani text-accent-2 hover:underline" to="/explorar">← Volver a explorar</Link>
-        {hasHistory ? (
-          <button className="font-rajdhani text-accent-2 hover:underline" type="button" onClick={() => navigate(-1)}>Volver</button>
-        ) : null}
+        <BackButton onBack={handleBack} />
       </div>
 
       <SystemWindow title="STATUS" className="overflow-hidden">
