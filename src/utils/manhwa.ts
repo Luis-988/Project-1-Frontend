@@ -63,6 +63,31 @@ export function statusLabel(status: ManhwaStatus | null): string {
   return status === null ? 'Desconocido' : labels[status]
 }
 
+export function genreLabel(genre: string): string {
+  const labels: Record<string, string> = {
+    Action: 'Acción',
+    Adventure: 'Aventura',
+    Comedy: 'Comedia',
+    Drama: 'Drama',
+    Fantasy: 'Fantasía',
+    Horror: 'Terror',
+    'Mahou Shoujo': 'Mahō shōjo',
+    Mecha: 'Mecha',
+    Music: 'Música',
+    Mystery: 'Misterio',
+    Psychological: 'Psicológico',
+    Romance: 'Romance',
+    'Sci-Fi': 'Ciencia ficción',
+    'Slice of Life': 'Recuentos de la vida',
+    Sports: 'Deportes',
+    Supernatural: 'Sobrenatural',
+    Thriller: 'Suspenso',
+    Ecchi: 'Ecchi',
+  }
+
+  return labels[genre] ?? genre
+}
+
 function decodeBasicEntities(value: string): string {
   const entities: Record<string, string> = {
     '&amp;': '&',

@@ -10,7 +10,7 @@ type UseManhwaListResult = {
 }
 
 function useManhwaList(params: ManhwaSearchParams = {}, retryKey = 0): UseManhwaListResult {
-  const { search, page, perPage, status, sort } = params
+  const { search, page, perPage, status, genre, sort } = params
   const [data, setData] = useState<Manhwa[]>([])
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null)
   const [loading, setLoading] = useState(true)
@@ -24,7 +24,7 @@ function useManhwaList(params: ManhwaSearchParams = {}, retryKey = 0): UseManhwa
 
       try {
         const response = await searchManhwa(
-          { search, page, perPage, status, sort },
+          { search, page, perPage, status, genre, sort },
           controller.signal,
         )
         setData(response.media)
@@ -41,7 +41,7 @@ function useManhwaList(params: ManhwaSearchParams = {}, retryKey = 0): UseManhwa
       window.clearTimeout(timeoutId)
       controller.abort()
     }
-  }, [search, page, perPage, status, sort, retryKey])
+  }, [search, page, perPage, status, genre, sort, retryKey])
 
   return { data, pageInfo, loading, error }
 }

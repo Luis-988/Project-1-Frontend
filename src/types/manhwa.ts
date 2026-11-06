@@ -68,6 +68,7 @@ export interface ManhwaSearchParams {
   page?: number;
   perPage?: number;
   status?: ManhwaStatus;
+  genre?: string;
   sort?: ManhwaSort;
 }
 

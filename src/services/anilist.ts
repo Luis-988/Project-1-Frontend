@@ -6,17 +6,20 @@ import type {
 } from '../types/manhwa'
 
 const API_URL = 'https://graphql.anilist.co'
+let genresCache: string[] | null = null
 
 export const LIST_QUERY = `
-  query ($page: Int, $perPage: Int, $search: String, $status: MediaStatus, $sort: [MediaSort]) {
+  query ($page: Int, $perPage: Int, $search: String, $status: MediaStatus, $sort: [MediaSort], $genres: [String]) {
     Page(page: $page, perPage: $perPage) {
       pageInfo { total perPage currentPage lastPage hasNextPage }
-      media(type: MANGA, countryOfOrigin: KR, isAdult: false, search: $search, status: $status, sort: $sort) {
+      media(type: MANGA, countryOfOrigin: KR, isAdult: false, search: $search, status: $status, genre_in: $genres, sort: $sort) {
         id title { romaji english native } coverImage { large extraLarge } averageScore chapters status format
       }
     }
   }
 `
+
+export const GENRES_QUERY = `query { GenreCollection }`
 
 export const DETAIL_QUERY = `
   query ($id: Int) {
@@ -103,14 +106,27 @@ export async function searchManhwa(
   const variables: Record<string, unknown> = {
     page: params.page ?? 1,
     perPage: params.perPage ?? 24,
-    sort: [search ? 'SEARCH_MATCH' : (params.sort ?? 'POPULARITY_DESC')],
+    sort: [search ? 'SEARCH_MATCH' : 'POPULARITY_DESC'],
   }
 
   if (search) variables.search = search
   if (params.status) variables.status = params.status
+  if (params.genre) variables.genres = [params.genre]
 
   const data = await postGraphQL<{ Page: ManhwaPage }>(LIST_QUERY, variables, signal)
   return data.Page
+}
+
+export async function getGenres(signal?: AbortSignal): Promise<string[]> {
+  if (genresCache !== null) return genresCache
+
+  const data = await postGraphQL<{ GenreCollection: Array<string | null> }>(
+    GENRES_QUERY,
+    {},
+    signal,
+  )
+  genresCache = data.GenreCollection.filter((genre): genre is string => genre !== null)
+  return genresCache
 }
 
 export async function getManhwaById(id: number, signal?: AbortSignal): Promise<ManhwaDetail> {

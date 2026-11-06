@@ -9,6 +9,7 @@ import {
   cleanDescription,
   formatChapters,
   formatScore,
+  genreLabel,
   getCoverSourcesXL,
   getTitle,
   statusLabel,
@@ -185,7 +186,7 @@ function Detail() {
 
             {data.genres && data.genres.length > 0 ? (
               <div className="mt-6 flex flex-wrap gap-2">
-                {data.genres.map((genre) => <span className="rounded-full border border-accent/50 px-3 py-1 text-sm text-accent" key={genre}>{genre}</span>)}
+                {data.genres.map((genre) => <span className="rounded-full border border-accent/50 px-3 py-1 text-sm text-accent" key={genre}>{genreLabel(genre)}</span>)}
               </div>
             ) : null}
 

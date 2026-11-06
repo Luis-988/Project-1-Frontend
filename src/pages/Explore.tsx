@@ -3,7 +3,9 @@ import ManhwaCard from '../components/ManhwaCard'
 import SystemWindow from '../components/SystemWindow'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import useManhwaList from '../hooks/useManhwaList'
-import type { ManhwaSort, ManhwaStatus } from '../types/manhwa'
+import { getGenres } from '../services/anilist'
+import type { ManhwaStatus } from '../types/manhwa'
+import { genreLabel } from '../utils/manhwa'
 import { notifyError } from '../utils/toast'
 
 const statusOptions: Array<{ value: ManhwaStatus | ''; label: string }> = [
@@ -11,12 +13,6 @@ const statusOptions: Array<{ value: ManhwaStatus | ''; label: string }> = [
   { value: 'RELEASING', label: 'En emisión' },
   { value: 'FINISHED', label: 'Finalizado' },
   { value: 'HIATUS', label: 'En pausa' },
-]
-
-const sortOptions: Array<{ value: ManhwaSort; label: string }> = [
-  { value: 'POPULARITY_DESC', label: 'Popularidad' },
-  { value: 'SCORE_DESC', label: 'Puntuación' },
-  { value: 'TITLE_ROMAJI', label: 'Título' },
 ]
 
 function LoadingGrid() {
@@ -43,13 +39,33 @@ function Explore() {
   const [search, setSearch] = useState('')
   const [appliedSearch, setAppliedSearch] = useState('')
   const [status, setStatus] = useState<ManhwaStatus | ''>('')
-  const [sort, setSort] = useState<ManhwaSort>('POPULARITY_DESC')
+  const [genre, setGenre] = useState('')
+  const [genres, setGenres] = useState<string[]>([])
+  const [genresLoading, setGenresLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [retryKey, setRetryKey] = useState(0)
   const { data, pageInfo, loading, error } = useManhwaList(
-    { search: appliedSearch, page, status: status || undefined, sort },
+    { search: appliedSearch, page, status: status || undefined, genre: genre || undefined },
     retryKey,
   )
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    getGenres(controller.signal)
+      .then((availableGenres) => {
+        setGenres(availableGenres.filter((availableGenre) => availableGenre !== 'Hentai'))
+      })
+      .catch((caughtError) => {
+        if (caughtError instanceof DOMException && caughtError.name === 'AbortError') return
+        setGenres([])
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setGenresLoading(false)
+      })
+
+    return () => controller.abort()
+  }, [])
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -81,10 +97,20 @@ function Explore() {
     setPage(1)
   }
 
-  const updateSort = (value: ManhwaSort) => {
-    setSort(value)
+  const updateGenre = (value: string) => {
+    setGenre(value)
     setPage(1)
   }
+
+  const clearFilters = () => {
+    setSearch('')
+    setAppliedSearch('')
+    setGenre('')
+    setStatus('')
+    setPage(1)
+  }
+
+  const hasActiveFilters = search.trim() !== '' || genre !== '' || status !== ''
 
   return (
     <div className="space-y-10">
@@ -96,7 +122,7 @@ function Explore() {
       </header>
 
       <SystemWindow title="BUSCAR">
-        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-end">
+        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto_minmax(12rem,auto)_minmax(12rem,auto)] md:items-end">
           <div>
             <label className="mb-2 block font-rajdhani text-sm font-semibold text-fg" htmlFor="manhwa-search">
               Buscar manhwa...
@@ -116,18 +142,32 @@ function Explore() {
             Buscar
           </button>
           <div>
+            <label className="mb-2 block font-rajdhani text-sm font-semibold text-fg" htmlFor="manhwa-genre">Género</label>
+            <select
+              className="w-full border border-accent/40 bg-base px-4 py-3 text-fg focus:border-accent-2 disabled:cursor-not-allowed disabled:opacity-60"
+              id="manhwa-genre"
+              value={genre}
+              disabled={genresLoading}
+              onChange={(event) => updateGenre(event.target.value)}
+            >
+              <option value="">{genresLoading ? 'Cargando géneros...' : 'Todos los géneros'}</option>
+              {!genresLoading ? genres.map((availableGenre) => (
+                <option key={availableGenre} value={availableGenre}>{genreLabel(availableGenre)}</option>
+              )) : null}
+            </select>
+          </div>
+          <div>
             <label className="mb-2 block font-rajdhani text-sm font-semibold text-fg" htmlFor="manhwa-status">Estado</label>
             <select className="w-full border border-accent/40 bg-base px-4 py-3 text-fg focus:border-accent-2" id="manhwa-status" value={status} onChange={(event) => updateStatus(event.target.value as ManhwaStatus | '')}>
               {statusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
             </select>
           </div>
-          <div>
-            <label className="mb-2 block font-rajdhani text-sm font-semibold text-fg" htmlFor="manhwa-sort">Orden</label>
-            <select className="w-full border border-accent/40 bg-base px-4 py-3 text-fg focus:border-accent-2" id="manhwa-sort" value={sort} onChange={(event) => updateSort(event.target.value as ManhwaSort)}>
-              {sortOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-          </div>
         </div>
+        {hasActiveFilters ? (
+          <button className="mt-4 border border-line px-4 py-2 font-rajdhani font-bold text-muted transition hover:border-accent hover:text-accent-2" type="button" onClick={clearFilters}>
+            Limpiar filtros
+          </button>
+        ) : null}
       </SystemWindow>
 
       <section ref={gridRef} aria-live="polite" aria-busy={loading}>
