@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom'
-import { Toaster } from 'sonner'
 import Layout from './components/Layout'
 import Contact from './pages/Contact'
 import Detail from './pages/Detail'
@@ -22,7 +21,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-      <Toaster richColors />
     </>
   )
 }

@@ -13,7 +13,7 @@ export const LIST_QUERY = `
     Page(page: $page, perPage: $perPage) {
       pageInfo { total perPage currentPage lastPage hasNextPage }
       media(type: MANGA, countryOfOrigin: KR, isAdult: false, search: $search, status: $status, sort: $sort) {
-        id title { romaji english native } coverImage { large } averageScore chapters status format
+        id title { romaji english native } coverImage { large extraLarge } averageScore chapters status format
       }
     }
   }
@@ -104,7 +104,7 @@ export async function searchManhwa(
   const variables: Record<string, unknown> = {
     page: params.page ?? 1,
     perPage: params.perPage ?? 24,
-    sort: [params.sort ?? (search ? 'SEARCH_MATCH' : 'POPULARITY_DESC')],
+    sort: [search ? 'SEARCH_MATCH' : (params.sort ?? 'POPULARITY_DESC')],
   }
 
   if (search) variables.search = search

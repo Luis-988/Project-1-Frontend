@@ -15,6 +15,30 @@ export function getCover(cover: ManhwaCover): string {
   return cover.large ?? cover.extraLarge ?? '/placeholder.svg'
 }
 
+export function getCoverSources(cover: ManhwaCover): {
+  src: string
+  srcSet: string | undefined
+} {
+  return {
+    src: getCover(cover),
+    srcSet: cover.extraLarge && cover.large
+      ? `${cover.large} 1x, ${cover.extraLarge} 2x`
+      : undefined,
+  }
+}
+
+export function getCoverSourcesXL(cover: ManhwaCover): {
+  src: string
+  srcSet: string | undefined
+} {
+  return {
+    src: cover.extraLarge ?? cover.large ?? '/placeholder.svg',
+    srcSet: cover.extraLarge && cover.large
+      ? `${cover.extraLarge} 2x, ${cover.large} 1x`
+      : undefined,
+  }
+}
+
 export function formatScore(score: number | null): string {
   return score === null ? 'N/A' : `${score}/100`
 }

@@ -1,4 +1,5 @@
 import type { Manhwa, ManhwaDetail } from '../types/manhwa'
+import type { MouseEvent } from 'react'
 import useFavoriteToggle from '../hooks/useFavoriteToggle'
 import { useFavorites } from '../context/FavoritesContext'
 import ConfirmDialog from './ConfirmDialog'
@@ -6,9 +7,10 @@ import ConfirmDialog from './ConfirmDialog'
 type FavoriteButtonProps = {
   manhwa: Manhwa | ManhwaDetail
   className?: string
+  showLabel?: boolean
 }
 
-function FavoriteButton({ manhwa, className = '' }: FavoriteButtonProps) {
+function FavoriteButton({ manhwa, className = '', showLabel = false }: FavoriteButtonProps) {
   const { isFavorite } = useFavorites()
   const {
     toggle,
@@ -18,18 +20,25 @@ function FavoriteButton({ manhwa, className = '' }: FavoriteButtonProps) {
   } = useFavoriteToggle()
   const favorite = isFavorite(manhwa.id)
 
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    toggle(manhwa)
+  }
+
   return (
     <>
       <button
         type="button"
-        className={`inline-flex items-center justify-center rounded-full border border-line p-2 text-xl transition hover:border-accent hover:text-accent ${className}`}
+        className={`inline-flex items-center justify-center gap-2 rounded-full border border-line p-2 text-xl transition hover:border-accent hover:text-accent ${showLabel ? 'px-4 py-2 font-rajdhani text-sm font-semibold' : ''} ${className}`}
         aria-label={favorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
         aria-pressed={favorite}
-        onClick={() => toggle(manhwa)}
+        onClick={handleClick}
       >
         <span aria-hidden="true" className={favorite ? 'text-accent' : 'text-muted'}>
           {favorite ? '♥' : '♡'}
         </span>
+        {showLabel ? (favorite ? 'Quitar de favoritos' : 'Agregar a favoritos') : null}
       </button>
       <ConfirmDialog
         open={isConfirmOpen}

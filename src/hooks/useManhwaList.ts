@@ -9,7 +9,7 @@ type UseManhwaListResult = {
   error: string | null
 }
 
-function useManhwaList(params: ManhwaSearchParams = {}): UseManhwaListResult {
+function useManhwaList(params: ManhwaSearchParams = {}, retryKey = 0): UseManhwaListResult {
   const { search, page, perPage, status, sort } = params
   const [data, setData] = useState<Manhwa[]>([])
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null)
@@ -41,7 +41,7 @@ function useManhwaList(params: ManhwaSearchParams = {}): UseManhwaListResult {
       window.clearTimeout(timeoutId)
       controller.abort()
     }
-  }, [search, page, perPage, status, sort])
+  }, [search, page, perPage, status, sort, retryKey])
 
   return { data, pageInfo, loading, error }
 }

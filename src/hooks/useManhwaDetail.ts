@@ -8,7 +8,7 @@ type UseManhwaDetailResult = {
   error: string | null
 }
 
-function useManhwaDetail(id: number | null | undefined): UseManhwaDetailResult {
+function useManhwaDetail(id: number | null | undefined, retryKey = 0): UseManhwaDetailResult {
   const [data, setData] = useState<ManhwaDetail | null>(null)
   const [loading, setLoading] = useState(Boolean(id))
   const [error, setError] = useState<string | null>(null)
@@ -38,7 +38,7 @@ function useManhwaDetail(id: number | null | undefined): UseManhwaDetailResult {
     void loadDetail()
 
     return () => controller.abort()
-  }, [id])
+  }, [id, retryKey])
 
   if (id === null || id === undefined) {
     return { data: null, loading: false, error: null }
