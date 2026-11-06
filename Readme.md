@@ -1,7 +1,7 @@
 
-# Project 1 Frontend
+# Manhwa System
 
-Proyecto base construido con Vite, React y TypeScript.
+Catálogo responsive de manhwas coreanos construido con Vite, React, TypeScript y Tailwind CSS. Consume la API GraphQL de AniList para consultar listados y detalles, y permite gestionar favoritos durante la navegación.
 
 ## Desarrollo
 
@@ -9,6 +9,15 @@ Proyecto base construido con Vite, React y TypeScript.
 npm install
 npm run dev
 ```
+
+Para validar el proyecto:
+
+```bash
+npm run lint
+npm run build
+```
+
+La aplicación usa el endpoint `https://graphql.anilist.co`.
 
 ## Estructura
 

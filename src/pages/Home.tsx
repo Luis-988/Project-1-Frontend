@@ -1,37 +1,14 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SideCovers from '../components/SideCovers'
 import SystemWindow from '../components/SystemWindow'
 import useDocumentTitle from '../hooks/useDocumentTitle'
-import { getTopManhwa } from '../services/anilist'
-import type { Manhwa } from '../types/manhwa'
+import useManhwaList from '../hooks/useManhwaList'
 
 function Home() {
   useDocumentTitle('Inicio')
-  const [coversLoading, setCoversLoading] = useState(true)
-  const [topManhwa, setTopManhwa] = useState<Manhwa[]>([])
-
-  useEffect(() => {
-    let active = true
-    const controller = new AbortController()
-    getTopManhwa(24, controller.signal)
-      .then((items) => {
-        if (!active) return
-        setTopManhwa(items)
-      })
-      .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === 'AbortError')) {
-          console.error('No se pudieron cargar las portadas populares:', error)
-        }
-      })
-      .finally(() => {
-        if (active) setCoversLoading(false)
-      })
-    return () => {
-      active = false
-      controller.abort()
-    }
-  }, [])
+  const { data: topManhwa, loading: coversLoading, error: coversError } = useManhwaList(
+    { page: 1, perPage: 24, sort: 'SCORE_DESC' },
+  )
 
   return (
     <div className="-mx-6 -my-12">
@@ -58,7 +35,10 @@ function Home() {
           <SideCovers items={topManhwa} loading={coversLoading} side="right" />
         </div>
       </section>
-
+      <section className="px-6 py-8 text-center" aria-live="polite">
+        {coversError ? <p className="text-accent">No se pudieron cargar las recomendaciones.</p> : null}
+        {!coversLoading && !coversError && topManhwa.length === 0 ? <p className="text-muted">No hay recomendaciones disponibles.</p> : null}
+      </section>
     </div>
   )
 }

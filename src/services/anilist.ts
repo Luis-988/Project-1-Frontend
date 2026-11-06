@@ -1,6 +1,5 @@
 import type {
   GraphQLResponse,
-  Manhwa,
   ManhwaDetail,
   ManhwaPage,
   ManhwaSearchParams,
@@ -126,17 +125,4 @@ export async function getManhwaById(id: number, signal?: AbortSignal): Promise<M
   }
 
   return data.Media
-}
-
-export async function getTopManhwa(
-  limit: number,
-  signal?: AbortSignal,
-  sort: ManhwaSearchParams['sort'] = 'POPULARITY_DESC',
-): Promise<Manhwa[]> {
-  const data = await postGraphQL<{ Page: ManhwaPage }>(
-    LIST_QUERY,
-    { page: 1, perPage: limit, sort: [sort] },
-    signal,
-  )
-  return data.Page.media
 }
