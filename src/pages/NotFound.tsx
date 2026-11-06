@@ -23,6 +23,7 @@ function NotFound() {
         <p className="mt-4 text-lg text-muted">
           La ruta que buscas no existe en esta aplicación.
         </p>
+        <p className="mt-3 text-lg text-muted">¿Te perdiste? Volvamos al camino.</p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link
             className="border border-btn bg-btn px-5 py-3 font-rajdhani font-semibold text-on-btn shadow-glow transition hover:bg-accent"

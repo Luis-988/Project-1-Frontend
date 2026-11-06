@@ -88,6 +88,28 @@ export function genreLabel(genre: string): string {
   return labels[genre] ?? genre
 }
 
+export function isGodOfHighSchool(manhwa: ManhwaDetail): boolean {
+  const titles = [manhwa.title.english, manhwa.title.romaji, manhwa.title.native]
+    .filter((title): title is string => title !== null)
+    .map((title) => title.toLowerCase())
+
+  return titles.some((title) =>
+    title.includes('god of high school') || title.includes('갓 오브 하이스쿨'),
+  )
+}
+
+export function formatLabel(format: string | null): string {
+  if (format === null) return 'N/A'
+
+  const labels: Record<string, string> = {
+    MANGA: 'Manga',
+    NOVEL: 'Novela',
+    ONE_SHOT: 'One-shot',
+  }
+
+  return labels[format] ?? `${format.charAt(0).toUpperCase()}${format.slice(1).toLowerCase()}`
+}
+
 function decodeBasicEntities(value: string): string {
   const entities: Record<string, string> = {
     '&amp;': '&',

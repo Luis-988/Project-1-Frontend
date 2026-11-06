@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import FavoritePick from '../components/FavoritePick'
 import SystemWindow from '../components/SystemWindow'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import { notifySuccess } from '../utils/toast'
@@ -59,13 +60,14 @@ function Contact() {
   }
 
   return (
-    <section className="mx-auto max-w-2xl space-y-8">
+    <section className="mx-auto max-w-6xl space-y-8">
       <header className="text-center">
         <h1 className="font-orbitron text-3xl font-bold text-fg sm:text-4xl">Contacto</h1>
         <p className="mt-3 text-lg text-muted">¿Tienes preguntas o sugerencias? Envíanos un mensaje.</p>
       </header>
-      <SystemWindow title="MENSAJE">
-        <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+      <div className="grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)] xl:items-stretch">
+        <SystemWindow title="MENSAJE">
+          <form className="space-y-5" onSubmit={handleSubmit} noValidate>
           <div>
             <label className="mb-2 block font-rajdhani font-semibold text-fg" htmlFor="contact-name">Nombre</label>
             <input
@@ -119,8 +121,10 @@ function Contact() {
           >
             Enviar mensaje
           </button>
-        </form>
-      </SystemWindow>
+          </form>
+        </SystemWindow>
+        <FavoritePick />
+      </div>
     </section>
   )
 }

@@ -8,10 +8,12 @@ import type { FuzzyDate } from '../types/manhwa'
 import {
   cleanDescription,
   formatChapters,
+  formatLabel,
   formatScore,
   genreLabel,
   getCoverSourcesXL,
   getTitle,
+  isGodOfHighSchool,
   statusLabel,
 } from '../utils/manhwa'
 import { notifyError } from '../utils/toast'
@@ -21,7 +23,18 @@ function formatDate(date: FuzzyDate | null): string {
     return 'Desconocido'
   }
 
-  return [date.year, date.month, date.day].filter((part) => part !== null).join('-')
+  const month = date.month === null
+    ? ''
+    : new Intl.DateTimeFormat('es', { month: 'short', timeZone: 'UTC' })
+      .format(new Date(Date.UTC(2000, date.month - 1, 1)))
+      .replace('.', '')
+  const parts = [
+    date.day === null ? '' : String(date.day),
+    month,
+    date.year === null ? '' : String(date.year),
+  ].filter(Boolean)
+
+  return parts.join(' ') || 'Desconocido'
 }
 
 function DetailSkeleton() {
@@ -64,9 +77,11 @@ function Detail() {
   const parsedId = Number(id)
   const validId = Number.isInteger(parsedId) && parsedId > 0 ? parsedId : null
   const [retryKey, setRetryKey] = useState(0)
+  const [godArtFailedForId, setGodArtFailedForId] = useState<number | null>(null)
   const { data, loading, error } = useManhwaDetail(validId, retryKey)
   const title = data ? getTitle(data.title) : loading ? 'Cargando...' : 'Manhwa no encontrado'
   const cover = data ? getCoverSourcesXL(data.coverImage) : null
+  const showGodArt = data !== null && isGodOfHighSchool(data) && godArtFailedForId !== validId
 
   useDocumentTitle(title)
 
@@ -145,7 +160,10 @@ function Detail() {
             aria-hidden="true"
           />
         ) : null}
-        <div className="relative flex flex-col gap-8 md:flex-row">
+        <div className={`relative gap-8 ${showGodArt
+          ? 'grid lg:grid-cols-[auto_minmax(0,1fr)_minmax(280px,420px)]'
+          : 'flex flex-col md:flex-row'}`}
+        >
           <div className="mx-auto w-full max-w-[260px] shrink-0 md:mx-0 md:w-[240px]">
             <img
               className="aspect-[2/3] w-full rounded-md object-cover"
@@ -167,7 +185,7 @@ function Detail() {
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <dl className="space-y-2 text-lg">
                 <div><dt className="inline text-muted">Estado: </dt><dd className="inline text-fg">{statusLabel(data.status)}</dd></div>
-                <div><dt className="inline text-muted">Formato: </dt><dd className="inline text-fg">{data.format ?? 'N/A'}</dd></div>
+                <div><dt className="inline text-muted">Formato: </dt><dd className="inline text-fg">{formatLabel(data.format)}</dd></div>
                 <div><dt className="inline text-muted">Capítulos: </dt><dd className="inline text-fg">{formatChapters(data.chapters)}</dd></div>
                 <div><dt className="inline text-muted">Volúmenes: </dt><dd className="inline text-fg">{data.volumes ?? 'N/A'}</dd></div>
                 <div><dt className="inline text-muted">Inicio: </dt><dd className="inline text-fg">{formatDate(data.startDate)}</dd></div>
@@ -180,7 +198,7 @@ function Detail() {
             </div>
 
             <div className="mt-6 inline-flex flex-col border border-accent/40 bg-accent/10 px-5 py-3">
-              <span className="font-rajdhani text-sm uppercase tracking-widest text-muted">STR / AGI</span>
+              <span className="font-rajdhani text-sm uppercase tracking-widest text-muted">PUNTUACIÓN</span>
               <strong className="font-orbitron text-3xl text-accent-2">{formatScore(data.averageScore)}</strong>
             </div>
 
@@ -195,6 +213,22 @@ function Detail() {
               {data.siteUrl ? <a className="text-accent-2 hover:underline" href={data.siteUrl} target="_blank" rel="noopener noreferrer">Ver en AniList</a> : null}
             </div>
           </div>
+          {showGodArt ? (
+            <figure className="w-full max-w-[360px] self-end justify-self-end rounded-md border border-line p-2 shadow-glow">
+              <img
+                className="mx-auto max-h-[220px] max-w-[260px] rounded-md object-contain"
+                src="/images/descarga (3).jpg"
+                width={300}
+                height={300}
+                loading="lazy"
+                alt="Ilustración de los personajes de The God of High School"
+                onError={() => setGodArtFailedForId(validId)}
+              />
+              <figcaption className="mt-2 text-xs leading-relaxed text-muted">
+                Imagen: The God of High School (Yongje Park / Naver Webtoon), usada con fines educativos.
+              </figcaption>
+            </figure>
+          ) : null}
         </div>
       </SystemWindow>
 
